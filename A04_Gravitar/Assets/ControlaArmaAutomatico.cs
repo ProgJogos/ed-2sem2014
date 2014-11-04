@@ -11,12 +11,16 @@ public class ControlaArmaAutomatico : MonoBehaviour
 	void Update () 
 	{
 		timer += Time.deltaTime;
-		if (timer > frequencia)
+		if (timer > frequencia && alvo != null)
 		{
 			timer = 0;
-			Vector3 direcaoTiro = alvo.position - transform.position;
-			direcaoTiro.x = Random.Range(-margemErro/2, margemErro/2);
-			transform.GetComponent<Arma>().Disparar(direcaoTiro);
+			Vector2 distanciaParaAlvo = Random.insideUnitCircle * 
+				margemErro;
+			Vector3 erro = alvo.position + new Vector3(
+				distanciaParaAlvo.x,
+				distanciaParaAlvo.y);
+			Vector3 mira = erro - transform.position;
+			transform.GetComponent<Arma>().Disparar(mira.normalized);
 		}
 	}
 }
